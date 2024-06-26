@@ -21,3 +21,20 @@ h2{
     background-color: #409fcf;
     width: fit-content;
 }
+
+hr{
+    height: 2px;
+    background-color: black;
+    border-color: black;
+    border-width: 0px;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+}
+
+.box{
+    margin: 0 50px;
+}
