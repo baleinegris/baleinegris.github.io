@@ -1,3 +1,23 @@
 body{
     background-color: cadetblue;
+    font: 1em 'OCR A', 'sans-serif'; 
+}
+h2{
+    color: #94672f;
+}
+
+.title{
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    width:400px;
+    border: 3px solid black;
+    border-radius: 50%;
+    background-color: aqua;
+}
+
+h2{
+    font-weight: bold;
+    background-color: #409fcf;
+    width: fit-content;
 }
