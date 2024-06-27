@@ -7,6 +7,18 @@ body{
     background-color: cadetblue;
     font: 1em 'OCR A', 'sans-serif'; 
 }
+
+h2{
+    color: #94672f;
+    font-weight: bold;
+    background-color: #409fcf;
+    width: fit-content;
+    margin: 10px;
+    margin-left: 0;
+    font-size: 20px;
+    padding: 5px;
+}
+
 h2{
     color: #94672f;
 }
@@ -42,12 +54,6 @@ h2{
     z-index: 0;
 }
 
-h2{
-    font-weight: bold;
-    background-color: #409fcf;
-    width: fit-content;
-}
-
 hr{
     height: 2px;
     background-color: black;
@@ -68,7 +74,7 @@ hr{
 
 
 table th, td{
-    width: fit-content;
+    width: 200px;
     border-collapse: collapse;
     border-color: black;
     border-width: 2px;
@@ -88,7 +94,12 @@ table th, td{
     vertical-align: middle;
     display: flex;
     align-items: center;
-    /* justify-content: space-evenly; */
+    justify-content: space-between;
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: flex-end;
 }
 
 .bannerElement{
@@ -96,14 +107,20 @@ table th, td{
 }
 
 .navigateButton{
+    height: 140px;
     margin: 0 10px;
     width: 100px;
-    height: 50px;
-    margin-left: 400px;
+    color: white;
+    background-color: black;
+    border-width: 0;
+    font-size: 20px;
+    font-family:'OCR A';
+    font-weight: bold;
 }
+
 .navigateButton:hover{
-    background-color: #555;
-    color: white; /* Button text color */
+    color: black;
+    background-color: white;
 }
 
 .firstElement{
