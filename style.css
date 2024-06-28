@@ -140,10 +140,17 @@ table th, td{
 #tetrisDisplay{
     background-color: black;
     color: white;
-    width: 143px;
-    height: 350px;
+    width: 200px;
+    height: 400px;
     padding: 2px;
+    font-family: pixel-font;
+    font-weight: bold;
 }
+
+@font-face {
+    font-family: pixel-font;
+    src: url('pixelFont.ttf');
+  }
 
 #tetris-title{
     font-size: 15px;
@@ -152,4 +159,5 @@ table th, td{
     background-color: black;
     text-align: center;
     margin: 2px 5px;
+    font-family: pixel-font;
 }

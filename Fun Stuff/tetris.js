@@ -1,7 +1,7 @@
 const gridWidth = 10;
 const gridHeight = 20;
 
-let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('  '));;
+let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
 console.log(grid[0]);
 
 class Bag{
@@ -27,17 +27,69 @@ class Bag{
 
 class Piece{
     constructor(type){
-        this.middlePosition = [0, Math.floor(gridWidth / 2)];
+        this.middlePosition = [1, Math.floor(gridWidth / 2)];
         this.type = type;
         this.orientation = 0;
-        this.hitbox = this.getHitbox()
+        this.hitbox = this.getHitbox(this.orientation)
     }
-    getHitbox(){
+    getHitbox(orientation){
         if (this.type == 0){
-            if (this.orientation == 0 || this.orientation == 2){
+            if (orientation == 0 || orientation == 2){
                 return [[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0], this.middlePosition[1] + 2]]
-            } else if (this.orientation == 1 || this.orientation == 3){
+            } else if (orientation == 1 || orientation == 3){
                 return [[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0] + 2, this.middlePosition[1]]]
+            }
+        } else if (this.type == 1){
+            if (orientation == 0){
+                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 1){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+            } else if (orientation == 2){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+            } else if (orientation == 3){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+            }
+        } else if (this.type == 2){
+            if (orientation == 0){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 1){
+                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]]]
+            } else if (orientation == 2){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 3){
+                return[[this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+            }
+        } else if (this.type == 3){
+            if (orientation == 0){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 1){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+            } else if (orientation == 2){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+            } else if (orientation == 3){
+                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]]]
+            }
+        } else if (this.type == 4){
+            if (orientation == 0){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+            } else if (orientation == 1){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+            } else if (orientation == 2){
+                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 3){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+            }
+        } else if (this.type == 5){
+            return [[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]]]
+        } else if (this.type == 6){
+            if (orientation == 0){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1]]]
+            } else if (orientation == 1){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0], this.middlePosition[1] + 1]]
+            } else if (orientation == 2){
+                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1]]]
+            } else if (orientation == 3){
+                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0], this.middlePosition[1] - 1]]
             }
         }
     }
@@ -47,17 +99,15 @@ class Piece{
         let block = this;
         this.hitbox.forEach(function(pos){
             let spotToTest = [pos[0] + 1, pos[1]];
-            if (spotToTest[0] >= gridHeight){
+            if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && grid[spotToTest[0]][spotToTest[1]] != '   ')){
                 spotFree = false;
-                // TODO: implement piece hitting ground
-            } else if (!(block.inHitbox(spotToTest)) && grid[spotToTest[0]][spotToTest[1]] != '  '){
-                spotFree = false;
+                groundHit();
             }
         })
         if (spotFree){
             this.erase();
             this.middlePosition[0] += 1;
-            this.hitbox = this.getHitbox();
+            this.hitbox = this.getHitbox(this.orientation);
             this.update()
         } else {
             return; // TODO
@@ -65,16 +115,19 @@ class Piece{
     }
 
     rotate(direction){
+        console.log('rotating');
         let oldHitbox = this.hitbox;
         let oldOrientation = this.orientation;
-        this.orientation = (this.orientation + direction) % 4;
-        this.erase();
-        this.hitbox = this.getHitbox();
-        if (!(this.isValidMove())){
-            this.hitbox = oldHitbox;
-            this.orientation = oldOrientation;
+        let newOrientation = (this.orientation + direction) % 4;
+        let newHitbox = this.getHitbox(newOrientation);
+        if (!(this.isValidMove(newHitbox))){
+            return; // TODO: Add offsetting
+        } else{
+            this.erase();
+            this.hitbox = newHitbox;
+            this.orientation = newOrientation;
+            this.update();
         }
-        this.update();
     }
 
     move(direction){
@@ -84,25 +137,25 @@ class Piece{
         currentHitbox.forEach(function(pos){
             let spotToTest = [pos[0], pos[1] + direction];
             let alreadyInHitbox = block.inHitbox(spotToTest);
-            console.log(spotToTest, alreadyInHitbox);
-            if (spotToTest[1] >= gridWidth || spotToTest[1] < 0 || (!(alreadyInHitbox) && grid[spotToTest[0]][spotToTest[1]] != '  ')){
+            if (spotToTest[1] >= gridWidth || spotToTest[1] < 0 || (!(alreadyInHitbox) && grid[spotToTest[0]][spotToTest[1]] != '   ')){
                 spotFree = false;
                 }
             })
         if (spotFree){
             this.erase();
             this.middlePosition[1] += direction;
-            this.hitbox = this.getHitbox();
+            this.hitbox = this.getHitbox(this.orientation);
             this.update();
         }
     }
 
-    isValidMove(){
-        this.hitbox.forEach(function(pos){
-            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || grid[pos[0]][pos[1]] != '  '){
+    isValidMove(hitbox){
+        for (let i = 0; i < hitbox.length; i++){
+            let pos = hitbox[i];
+            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || (!this.inHitbox([pos[0], pos[1]]) && grid[pos[0]][pos[1]] != '   ')){
                 return false;
             }
-        })
+        }
         return true;
     }
 
@@ -116,21 +169,50 @@ class Piece{
         return false;
     }
     
+    offset(hitbox, amount){
+        hitbox.forEach(function(pos){
+            pos[1] += amount;
+        })
+        return hitbox;
+    }
 
     erase(){
         this.hitbox.forEach(function(pos){
-            grid[pos[0]][pos[1]] = '  ';
+            grid[pos[0]][pos[1]] = '   ';
         });
     }
 
     update(){
         this.hitbox.forEach(function(pos){
-            grid[pos[0]][pos[1]] = '[]';
+            grid[pos[0]][pos[1]] = '[ ]';
         });
     }
 }    
     
 
+function groundHit(){
+    let rowsCleared = []
+    currentPiece = currentBag.getPiece();
+    for (let i = 0; i < gridHeight; i++){
+        let rowFull = true;
+        for (let j = 0; j < gridWidth; j++){
+            if (grid[i][j] == '   '){
+                rowFull = false;
+                break;
+            }
+        }
+        if (rowFull){
+            rowsCleared.push(i);
+        }
+    }
+    for (let i = 0; i < rowsCleared.length; i++){
+        grid[rowsCleared[i]] = Array(gridWidth).fill('   ');
+        for (let j = rowsCleared[i]; j > 0; j--){
+            grid[j] = grid[j - 1];
+        }
+        grid[0] = Array(gridWidth).fill('   ');
+    }
+}
 
 function getNewPiece(){
     return new Piece(0);
@@ -155,7 +237,7 @@ function handleTurn(){
 }
 
 let currentBag = new Bag();
-var currentPiece = new Piece(0);
+var currentPiece = currentBag.getPiece();
 
 function gameLoop() {
     renderBoard();
