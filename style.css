@@ -140,11 +140,12 @@ table th, td{
 #tetrisDisplay{
     background-color: black;
     color: white;
-    width: 200px;
+    width: 150px;
     height: 400px;
     padding: 2px;
     font-family: pixel-font;
     font-weight: bold;
+    border: 2px solid white;
 }
 
 @font-face {
