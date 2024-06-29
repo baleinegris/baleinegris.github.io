@@ -291,7 +291,7 @@ document.addEventListener('submit', function(event){
     event.preventDefault();
     if (document.getElementById('colour').checked){
         colorSet = 1;
-    } else if (document.getElementById('memo').checked){
+    } else if (document.getElementById('melody').checked){
         colorSet = 2;
     } else{
         colorSet = 0;
