@@ -1,8 +1,8 @@
 const gridWidth = 10;
 const gridHeight = 20;
 let speed = 500;
-let colorSet = 1;
-let solidBlocks = true;
+let colorSet = 0;
+let solidBlocks = false;
 
 
 let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
@@ -339,7 +339,9 @@ function hold(){
     currentPiece.middlePosition = middlePosition;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
     currentPiece.update();
+    updateHeldPiece();
 }
+
 setInterval(function(){
     currentPiece.moveDown();
     renderBoard();
@@ -351,6 +353,77 @@ let currentBag = new Bag();
 var currentPiece = currentBag.getPiece();
 upcomingPieceGrid = Array.from({ length: 4 }, () => Array(4).fill('   '));
 updateUpcomingPieces();
+
+function updateHeldPiece(){
+    let heldPieceElt = document.getElementById('held-piece');
+    let heldPieceGrid = Array.from({ length: 2 }, () => Array(4).fill('   '));
+    color = typeToColor[heldPiece.type][colorSet];
+    if (heldPiece == null){
+        return;
+    } else{
+        switch (heldPiece.type){
+            case 0:
+                heldPieceGrid[0][0] = color;
+                heldPieceGrid[0][1] = color;
+                heldPieceGrid[0][2] = color;
+                heldPieceGrid[0][3] = color;
+                break;
+            case 1:
+                heldPieceGrid[0][1] = color;
+                heldPieceGrid[0][2] = color;
+                heldPieceGrid[1][1] = color;
+                heldPieceGrid[1][0] = color;
+                break;
+            case 2:
+                heldPieceGrid[0][0] = color;
+                heldPieceGrid[0][1] = color;
+                heldPieceGrid[1][1] = color;
+                heldPieceGrid[1][2] = color;
+                break;
+            case 3:
+                heldPieceGrid[0][0] = color;
+                heldPieceGrid[1][0] = color;
+                heldPieceGrid[1][1] = color;
+                heldPieceGrid[1][2] = color;
+                break;
+            case 4:
+                heldPieceGrid[1][0] = color;
+                heldPieceGrid[1][1] = color;
+                heldPieceGrid[1][2] = color;
+                heldPieceGrid[0][2] = color;
+                break;
+            case 5:
+                heldPieceGrid[0][0] = color;
+                heldPieceGrid[1][0] = color;
+                heldPieceGrid[0][1] = color;
+                heldPieceGrid[1][1] = color;
+                break;
+            case 6:
+                heldPieceGrid[0][1] = color;
+                heldPieceGrid[1][1] = color;
+                heldPieceGrid[1][2] = color;
+                heldPieceGrid[1][0] = color;
+                break;
+        }
+        let html = '';
+        for (let i = 0; i < heldPieceGrid.length; i++){
+            html += '<pre style=\'background-color: black; color: white; font-family: pixel-font; font-weight: bold;\'>'
+            for (let j = 0; j < heldPieceGrid[0].length; j++){
+                if (heldPieceGrid[i][j] === '   '){
+                    html += `<block>${heldPieceGrid[i][j]}</block>`;
+                } else{
+                    if (solidBlocks){
+                        html += `<block style='background-color: ${heldPieceGrid[i][j]}; color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
+                    } else{
+                        html += `<block style='color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
+                    }
+                }
+            }
+            html += '</pre>';
+        }
+        heldPieceElt.innerHTML = html;
+    }
+}
 
 function updateUpcomingPieces(){
     let nextPiece = document.getElementById('piece1');

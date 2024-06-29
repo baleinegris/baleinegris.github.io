@@ -188,8 +188,12 @@ table th, td{
     height: fit-content;
 }
 
-#piece1{
+#piece1, #held-piece{
     border: 2px solid white;
     padding: 10px;
     width: 56px;
+}
+
+#held-piece-sign{
+    font-family: pixel-font;
 }
