@@ -211,7 +211,7 @@ class Piece{
     update(){
         let block = this;
         this.hitbox.forEach(function(pos){
-            grid[pos[0]][pos[1]] = `${typeToColor[block.type][colorSet]}`;
+            grid[pos[0]][pos[1]] = block.type;
         });
     }
 }    
@@ -261,13 +261,14 @@ function renderBoard() {
     for (let i = 0; i < gridHeight; i++) {
         html += '<div>';
         for (let j = 0; j < gridWidth; j++) {
-            if (grid[i][j] == '   '){
+            if (grid[i][j] === '   '){
                 html += `<block>${grid[i][j]}</block>`;
             } else{
+                let color = typeToColor[grid[i][j]][colorSet]
                 if (solidBlocks){
-                    html += `<block style='background-color: ${grid[i][j]}; color: ${grid[i][j]};'>[ ]</block>`;
+                    html += `<block style='background-color: ${color}; color: ${color};'>[ ]</block>`;
                 } else{
-                    html += `<block style='color: ${grid[i][j]};'>[ ]</block>`;
+                    html += `<block style='color: ${color};'>[ ]</block>`;
                 }
             }
         }
@@ -286,7 +287,21 @@ function gameLoop() {
 }
 
 document.addEventListener('keydown', manageInput);
-
+document.addEventListener('submit', function(event){
+    event.preventDefault();
+    if (document.getElementById('colour').checked){
+        colorSet = 1;
+    } else{
+        colorSet = 0;
+    }
+    if (document.getElementById('solidOn').checked){
+        solidBlocks = true;
+    } else{
+        solidBlocks = false;
+    }
+    renderBoard();
+    updateUpcomingPieces();
+});
 function manageInput(event){
     if (event.keyCode == '37'){
         currentPiece.move(-1);
@@ -388,7 +403,7 @@ function updateUpcomingPieces(){
     for (let i = 0; i < upcomingPieceGrid.length; i++){
         html += '<pre style=\'background-color: black; color: white; font-family: pixel-font; font-weight: bold;\'>'
         for (let j = 0; j < upcomingPieceGrid[0].length; j++){
-            if (upcomingPieceGrid[i][j] == '   '){
+            if (upcomingPieceGrid[i][j] === '   '){
                 html += `<block>${upcomingPieceGrid[i][j]}</block>`;
             } else{
                 if (solidBlocks){

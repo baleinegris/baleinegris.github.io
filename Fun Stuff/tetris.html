@@ -20,15 +20,25 @@
             </div>
         </div>
         <h1 class='firstElement'>Coming Soon!</h1>
-        <pre id="tetrisDisplay">
-            <div class="tetris-container">
-                <pre id="tetrisGrid"></pre>
-                <pre id="sideRow">
-                    <div id="next-piece-sign">NEXT PIECE</div>
-                    <pre id="piece1">
-                    </pre>
+        <div class="tetris-container">
+            <pre id="tetrisGrid"></pre>
+            <pre id="sideRow">
+                <div id="next-piece-sign">NEXT PIECE</div>
+                <pre id="piece1">
                 </pre>
-            </div>
-        </pre>
+            </pre>
+        </div>
+        <form>
+            <input type="radio" name="colorset" id="mono" value="0">
+                <label for="mono">Monochrome</label>
+            <input type="radio" name="colorset" id="colour" value="1">
+                <label for="colour">Colour</label>
+            <br>
+            <input type="radio" name="solid" id="solidOn" value="1">
+                <label for="mono">Solid Blocks</label>
+            <input type="radio" name="solid" id="solidOff" value="0">
+                <label for="colour">Empty Blocks</label>
+            <button type="submit">Apply</button>
+        </form>
         <script src="tetris.js"></script>
     </body>
