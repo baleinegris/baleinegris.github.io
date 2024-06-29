@@ -1,8 +1,22 @@
 const gridWidth = 10;
 const gridHeight = 20;
+let speed = 500;
+let colorSet = 1;
+let solidBlocks = true;
+
 
 let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
 console.log(grid[0]);
+
+let typeToColor = {
+    0: ['white', 'cyan'],
+    1: ['white','green'],
+    2: ['white','red'],
+    3: ['white','blue'],
+    4: ['white','orange'],
+    5: ['white','yellow'],
+    6: ['white','purple']
+}
 
 class Bag{
     constructor(){
@@ -10,11 +24,13 @@ class Bag{
         this.fillBag();
     }
     fillBag(){
-        let availablePieces = [0, 1, 2, 3, 4, 5, 6];
-        for (let i = 0; i < 7; i++){
-            let randomIndex = Math.floor(Math.random() * availablePieces.length);
-            this.bag.push(new Piece(availablePieces[randomIndex]));
-            availablePieces.splice(randomIndex, 1);
+        for (let i = 0; i < 5; i++){
+            let availablePieces = [0, 1, 2, 3, 4, 5, 6];
+            for (let i = 0; i < 7; i++){
+                let randomIndex = Math.floor(Math.random() * availablePieces.length);
+                this.bag.push(new Piece(availablePieces[randomIndex]));
+                availablePieces.splice(randomIndex, 1);
+            }
         }
     }
     getPiece(){
@@ -30,66 +46,66 @@ class Piece{
         this.middlePosition = [1, Math.floor(gridWidth / 2)];
         this.type = type;
         this.orientation = 0;
-        this.hitbox = this.getHitbox(this.orientation)
+        this.hitbox = this.getHitbox(this.middlePosition, this.orientation)
     }
-    getHitbox(orientation){
+    getHitbox(middlePosition, orientation){
         if (this.type == 0){
             if (orientation == 0 || orientation == 2){
-                return [[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0], this.middlePosition[1] + 2]]
+                return [[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0], middlePosition[1] + 2]]
             } else if (orientation == 1 || orientation == 3){
-                return [[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0] + 2, this.middlePosition[1]]]
+                return [[middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]], [middlePosition[0] + 2, middlePosition[1]]]
             }
         } else if (this.type == 1){
             if (orientation == 0){
-                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] + 1, middlePosition[1] - 1], [middlePosition[0] + 1, middlePosition[1]], middlePosition, [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 1){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+                return[[middlePosition[0], middlePosition[1] - 1], [middlePosition[0] - 1, middlePosition[1] - 1], middlePosition, [middlePosition[0] + 1, middlePosition[1]]]
             } else if (orientation == 2){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0] - 1, middlePosition[1]], [middlePosition[0] - 1, middlePosition[1] + 1]]
             } else if (orientation == 3){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] + 1, middlePosition[1] + 1]]
             }
         } else if (this.type == 2){
             if (orientation == 0){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1] - 1], [middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 1){
-                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]]]
+                return[[middlePosition[0] + 1, middlePosition[1] - 1], [middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0] - 1, middlePosition[1]]]
             } else if (orientation == 2){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1] - 1], [middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 3){
-                return[[this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0] + 1, middlePosition[1]], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] - 1, middlePosition[1] + 1]]
             }
         } else if (this.type == 3){
             if (orientation == 0){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1] - 1], [middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 1){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+                return[[middlePosition[0] - 1, middlePosition[1] + 1], [middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]]]
             } else if (orientation == 2){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] + 1, middlePosition[1] + 1]]
             } else if (orientation == 3){
-                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] - 1, this.middlePosition[1]]]
+                return[[middlePosition[0] + 1, middlePosition[1] - 1], [middlePosition[0] + 1, middlePosition[1]], middlePosition, [middlePosition[0] - 1, middlePosition[1]]]
             }
         } else if (this.type == 4){
             if (orientation == 0){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] - 1, middlePosition[1] + 1]]
             } else if (orientation == 1){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0] + 1, this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]], [middlePosition[0] + 1, middlePosition[1] + 1]]
             } else if (orientation == 2){
-                return[[this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] + 1, middlePosition[1] - 1], [middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 3){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1] - 1], [this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]]]
+                return[[middlePosition[0] - 1, middlePosition[1] - 1], [middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]]]
             }
         } else if (this.type == 5){
-            return [[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1] - 1], [this.middlePosition[0] + 1, this.middlePosition[1]]]
+            return [[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0] + 1, middlePosition[1] - 1], [middlePosition[0] + 1, middlePosition[1]]]
         } else if (this.type == 6){
             if (orientation == 0){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] - 1, this.middlePosition[1]]]
+                return[[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] - 1, middlePosition[1]]]
             } else if (orientation == 1){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0], this.middlePosition[1] + 1]]
+                return[[middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]], [middlePosition[0], middlePosition[1] + 1]]
             } else if (orientation == 2){
-                return[[this.middlePosition[0], this.middlePosition[1] - 1], this.middlePosition, [this.middlePosition[0], this.middlePosition[1] + 1], [this.middlePosition[0] + 1, this.middlePosition[1]]]
+                return[[middlePosition[0], middlePosition[1] - 1], middlePosition, [middlePosition[0], middlePosition[1] + 1], [middlePosition[0] + 1, middlePosition[1]]]
             } else if (orientation == 3){
-                return[[this.middlePosition[0] - 1, this.middlePosition[1]], this.middlePosition, [this.middlePosition[0] + 1, this.middlePosition[1]], [this.middlePosition[0], this.middlePosition[1] - 1]]
+                return[[middlePosition[0] - 1, middlePosition[1]], middlePosition, [middlePosition[0] + 1, middlePosition[1]], [middlePosition[0], middlePosition[1] - 1]]
             }
         }
     }
@@ -102,12 +118,13 @@ class Piece{
             if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && grid[spotToTest[0]][spotToTest[1]] != '   ')){
                 spotFree = false;
                 groundHit();
+                return;
             }
         })
         if (spotFree){
             this.erase();
             this.middlePosition[0] += 1;
-            this.hitbox = this.getHitbox(this.orientation);
+            this.hitbox = this.getHitbox(this.middlePosition, this.orientation);
             this.update()
         } else {
             return; // TODO
@@ -119,7 +136,7 @@ class Piece{
         let oldHitbox = this.hitbox;
         let oldOrientation = this.orientation;
         let newOrientation = (this.orientation + direction) % 4;
-        let newHitbox = this.getHitbox(newOrientation);
+        let newHitbox = this.getHitbox(this.middlePosition, newOrientation);
         if (!(this.isValidMove(newHitbox))){
             return; // TODO: Add offsetting
         } else{
@@ -144,7 +161,7 @@ class Piece{
         if (spotFree){
             this.erase();
             this.middlePosition[1] += direction;
-            this.hitbox = this.getHitbox(this.orientation);
+            this.hitbox = this.getHitbox(this.middlePosition, this.orientation);
             this.update();
         }
     }
@@ -169,11 +186,20 @@ class Piece{
         return false;
     }
     
-    offset(hitbox, amount){
-        hitbox.forEach(function(pos){
-            pos[1] += amount;
-        })
-        return hitbox;
+    hardDrop(){
+        let newPosition = [...this.middlePosition];
+        let newHitbox = this.getHitbox(newPosition, this.orientation);
+        while (this.isValidMove(newHitbox)){
+            newPosition[0] += 1;
+            newHitbox = this.getHitbox(newPosition, this.orientation);
+        }
+        newPosition[0] -= 1;
+        newHitbox = this.getHitbox(newPosition, this.orientation);
+        this.erase();
+        this.hitbox = newHitbox;
+        this.middlePosition = newPosition;
+        this.update();
+        this.moveDown();
     }
 
     erase(){
@@ -183,34 +209,44 @@ class Piece{
     }
 
     update(){
+        let block = this;
         this.hitbox.forEach(function(pos){
-            grid[pos[0]][pos[1]] = '[ ]';
+            grid[pos[0]][pos[1]] = `${typeToColor[block.type][colorSet]}`;
         });
     }
 }    
-    
+
+ const groundHitCooldown = 100;
+ let lastGroundHitTime = 0;
 
 function groundHit(){
-    let rowsCleared = []
-    currentPiece = currentBag.getPiece();
-    for (let i = 0; i < gridHeight; i++){
-        let rowFull = true;
-        for (let j = 0; j < gridWidth; j++){
-            if (grid[i][j] == '   '){
-                rowFull = false;
-                break;
+    const now = Date.now();
+    if (now - lastGroundHitTime > groundHitCooldown) {
+        let rowsCleared = []
+        let newPiece = currentBag.getPiece();
+        currentPiece = newPiece;
+        for (let i = 0; i < gridHeight; i++){
+            let rowFull = true;
+            for (let j = 0; j < gridWidth; j++){
+                if (grid[i][j] == '   '){
+                    rowFull = false;
+                    break;
+                }
+            }
+            if (rowFull){
+                rowsCleared.push(i);
             }
         }
-        if (rowFull){
-            rowsCleared.push(i);
+        for (let i = 0; i < rowsCleared.length; i++){
+            grid[rowsCleared[i]] = Array(gridWidth).fill('   ');
+            for (let j = rowsCleared[i]; j > 0; j--){
+                grid[j] = grid[j - 1];
+            }
+            grid[0] = Array(gridWidth).fill('   ');
         }
-    }
-    for (let i = 0; i < rowsCleared.length; i++){
-        grid[rowsCleared[i]] = Array(gridWidth).fill('   ');
-        for (let j = rowsCleared[i]; j > 0; j--){
-            grid[j] = grid[j - 1];
-        }
-        grid[0] = Array(gridWidth).fill('   ');
+        updateUpcomingPieces();
+        lastGroundHitTime = now;
+        holdReady = true;
     }
 }
 
@@ -219,13 +255,21 @@ function getNewPiece(){
 }
 
 function renderBoard() {
-    let board = document.getElementById('tetrisDisplay');
+    let board = document.getElementById('tetrisGrid');
     let html = '';
     html += '<div id= \'tetris-title\'>TETRIS</div>'
     for (let i = 0; i < gridHeight; i++) {
         html += '<div>';
         for (let j = 0; j < gridWidth; j++) {
-            html += grid[i][j];
+            if (grid[i][j] == '   '){
+                html += `<block>${grid[i][j]}</block>`;
+            } else{
+                if (solidBlocks){
+                    html += `<block style='background-color: ${grid[i][j]}; color: ${grid[i][j]};'>[ ]</block>`;
+                } else{
+                    html += `<block style='color: ${grid[i][j]};'>[ ]</block>`;
+                }
+            }
         }
         html += '</div>';
     }
@@ -235,9 +279,6 @@ function renderBoard() {
 function handleTurn(){
     return;
 }
-
-let currentBag = new Bag();
-var currentPiece = currentBag.getPiece();
 
 function gameLoop() {
     renderBoard();
@@ -255,13 +296,111 @@ function manageInput(event){
         currentPiece.rotate(1);
     } else if (event.keyCode == '40'){
         currentPiece.moveDown();
+    } else if (event.code == 'Space'){
+        currentPiece.hardDrop();
+    } else if (event.code == 'KeyC'){
+        if (holdReady){
+            hold()
+            updateUpcomingPieces();
+        }
     }
     
 }
 
+function hold(){
+    holdReady = false;
+    let middlePosition = currentPiece.middlePosition;
+    currentPiece.erase();
+    if (heldPiece == null){
+        heldPiece = currentPiece;
+        currentPiece = currentBag.getPiece();
+    } else{
+        let temp = heldPiece;
+        heldPiece = currentPiece;
+        currentPiece = temp;
+    }
+    currentPiece.middlePosition = middlePosition;
+    currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
+    currentPiece.update();
+}
 setInterval(function(){
     currentPiece.moveDown();
     renderBoard();
 }, 500);
+
+let holdReady = true;
+let heldPiece = null;
+let currentBag = new Bag();
+var currentPiece = currentBag.getPiece();
+upcomingPieceGrid = Array.from({ length: 4 }, () => Array(4).fill('   '));
+updateUpcomingPieces();
+
+function updateUpcomingPieces(){
+    let nextPiece = document.getElementById('piece1');
+    let upcomingPieceGrid = Array.from({ length: 2 }, () => Array(4).fill('   '));
+    let upcomingPiece = currentBag.bag[currentBag.bag.length - 1];
+    let color = typeToColor[upcomingPiece.type][colorSet]
+    switch (upcomingPiece.type){
+        case 0:
+            upcomingPieceGrid[0][0] = color;
+            upcomingPieceGrid[0][1] = color;
+            upcomingPieceGrid[0][2] = color;
+            upcomingPieceGrid[0][3] = color;
+            break;
+        case 1:
+            upcomingPieceGrid[0][1] = color;
+            upcomingPieceGrid[0][2] = color;
+            upcomingPieceGrid[1][1] = color;
+            upcomingPieceGrid[1][0] = color;
+            break;
+        case 2:
+            upcomingPieceGrid[0][0] = color;
+            upcomingPieceGrid[0][1] = color;
+            upcomingPieceGrid[1][1] = color;
+            upcomingPieceGrid[1][2] = color;
+            break;
+        case 3:
+            upcomingPieceGrid[0][0] = color;
+            upcomingPieceGrid[1][0] = color;
+            upcomingPieceGrid[1][1] = color;
+            upcomingPieceGrid[1][2] = color;
+            break;
+        case 4:
+            upcomingPieceGrid[1][0] = color;
+            upcomingPieceGrid[1][1] = color;
+            upcomingPieceGrid[1][2] = color;
+            upcomingPieceGrid[0][2] = color;
+            break;
+        case 5:
+            upcomingPieceGrid[0][0] = color;
+            upcomingPieceGrid[1][0] = color;
+            upcomingPieceGrid[0][1] = color;
+            upcomingPieceGrid[1][1] = color;
+            break;
+        case 6:
+            upcomingPieceGrid[0][1] = color;
+            upcomingPieceGrid[1][1] = color;
+            upcomingPieceGrid[1][2] = color;
+            upcomingPieceGrid[1][0] = color;
+            break;
+    }
+    let html = '';
+    for (let i = 0; i < upcomingPieceGrid.length; i++){
+        html += '<pre style=\'background-color: black; color: white; font-family: pixel-font; font-weight: bold;\'>'
+        for (let j = 0; j < upcomingPieceGrid[0].length; j++){
+            if (upcomingPieceGrid[i][j] == '   '){
+                html += `<block>${upcomingPieceGrid[i][j]}</block>`;
+            } else{
+                if (solidBlocks){
+                    html += `<block style='background-color: ${upcomingPieceGrid[i][j]}; color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
+                } else{
+                    html += `<block style='color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
+                }
+            }
+        }
+        html += '</pre>';
+    }
+    nextPiece.innerHTML = html;
+}
 
 gameLoop();

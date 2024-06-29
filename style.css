@@ -137,11 +137,11 @@ table th, td{
     padding: 10px;
 }
 
-#tetrisDisplay{
+#tetrisGrid{
     background-color: black;
     color: white;
     width: 150px;
-    height: 400px;
+    height: 360px;
     padding: 2px;
     font-family: pixel-font;
     font-weight: bold;
@@ -153,6 +153,28 @@ table th, td{
     src: url('pixelFont.ttf');
   }
 
+
+#tetrisDisplay{
+    background-color: black;
+    color: white;
+    font-family: pixel-font;
+    font-weight: bold;
+    width: fit-content;
+    height: 400px;
+    width: 300px;
+}
+
+#sideRow{
+    padding: 0 10px;
+    border-collapse: collapse;
+    font-size: 15px;
+    background-color: black;
+    color: white;
+    font-family: pixel-font;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
 #tetris-title{
     font-size: 15px;
     font-weight: bold;
@@ -161,4 +183,16 @@ table th, td{
     text-align: center;
     margin: 2px 5px;
     font-family: pixel-font;
+}
+
+.tetris-container{
+    display: flex;
+    justify-content: left;
+    width: fit-content;
+}
+
+#piece1{
+    border: 2px solid white;
+    padding: 10px;
+    width: 56px;
 }
