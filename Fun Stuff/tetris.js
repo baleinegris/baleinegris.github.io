@@ -9,13 +9,13 @@ let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   ')
 console.log(grid[0]);
 
 let typeToColor = {
-    0: ['white', 'cyan'],
-    1: ['white','green'],
-    2: ['white','red'],
-    3: ['white','blue'],
-    4: ['white','orange'],
-    5: ['white','yellow'],
-    6: ['white','purple']
+    0: ['white', 'cyan', 'pink'],
+    1: ['white','green', 'pink'],
+    2: ['white','red', 'pink'],
+    3: ['white','blue', 'pink'],
+    4: ['white','orange', 'pink'],
+    5: ['white','yellow', 'pink'],
+    6: ['white','purple', 'pink'],
 }
 
 class Bag{
@@ -115,7 +115,7 @@ class Piece{
         let block = this;
         this.hitbox.forEach(function(pos){
             let spotToTest = [pos[0] + 1, pos[1]];
-            if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && grid[spotToTest[0]][spotToTest[1]] != '   ')){
+            if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && !(grid[spotToTest[0]][spotToTest[1]] === '   '))){
                 spotFree = false;
                 groundHit();
                 return;
@@ -169,7 +169,7 @@ class Piece{
     isValidMove(hitbox){
         for (let i = 0; i < hitbox.length; i++){
             let pos = hitbox[i];
-            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || (!this.inHitbox([pos[0], pos[1]]) && grid[pos[0]][pos[1]] != '   ')){
+            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || (!this.inHitbox([pos[0], pos[1]]) && !(grid[pos[0]][pos[1]] === '   '))){
                 return false;
             }
         }
@@ -228,7 +228,7 @@ function groundHit(){
         for (let i = 0; i < gridHeight; i++){
             let rowFull = true;
             for (let j = 0; j < gridWidth; j++){
-                if (grid[i][j] == '   '){
+                if (grid[i][j] === '   '){
                     rowFull = false;
                     break;
                 }
@@ -291,6 +291,8 @@ document.addEventListener('submit', function(event){
     event.preventDefault();
     if (document.getElementById('colour').checked){
         colorSet = 1;
+    } else if (document.getElementById('memo').checked){
+        colorSet = 2;
     } else{
         colorSet = 0;
     }
