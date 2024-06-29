@@ -7,6 +7,10 @@
         <link rel="icon" href="../ProfPic.png">
     </head>
     <body>
+        <audio controls autoplay muted hidden loop id="tetris-theme">
+            <source src="ArcadeMusic.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
         <div class="topBanner">
             <div class="bannerElement">
                 <a href="index.html"><img src="../ProfPic.png" height="100px" width="100px" id="profPic"/></a>
@@ -42,5 +46,7 @@
                 <label for="colour">Empty Blocks</label>
             <button type="submit">Apply</button>
         </form>
+        <button id="sound">Unmute Music</button>
+        <button id="restart">Restart</button>
         <script src="tetris.js"></script>
     </body>

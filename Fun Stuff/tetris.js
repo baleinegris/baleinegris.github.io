@@ -1,14 +1,7 @@
 const gridWidth = 10;
 const gridHeight = 20;
-let speed = 500;
-let colorSet = 0;
-let solidBlocks = false;
-
-
 let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
-console.log(grid[0]);
-
-let typeToColor = {
+const typeToColor = {
     0: ['white', 'cyan', 'pink'],
     1: ['white','green', 'pink'],
     2: ['white','red', 'pink'],
@@ -222,6 +215,11 @@ class Piece{
 function groundHit(){
     const now = Date.now();
     if (now - lastGroundHitTime > groundHitCooldown) {
+        currentPiece.hitbox.forEach(function(pos){
+            if (pos[0] == 0){
+                restart();
+            }
+        });
         let rowsCleared = []
         let newPiece = currentBag.getPiece();
         currentPiece = newPiece;
@@ -237,18 +235,18 @@ function groundHit(){
                 rowsCleared.push(i);
             }
         }
-        for (let i = 0; i < rowsCleared.length; i++){
-            grid[rowsCleared[i]] = Array(gridWidth).fill('   ');
-            for (let j = rowsCleared[i]; j > 0; j--){
-                grid[j] = grid[j - 1];
+        for (let i = 0; i < rowsCleared.length; i++){            
+                for (let j = rowsCleared[i]; j > 0; j--){
+                    grid[j] = grid[j - 1];
+                }
+                grid[0] = Array(gridWidth).fill('   ');
             }
-            grid[0] = Array(gridWidth).fill('   ');
+            updateUpcomingPieces();
+            lastGroundHitTime = now;
+            holdReady = true;
+            }
         }
-        updateUpcomingPieces();
-        lastGroundHitTime = now;
-        holdReady = true;
-    }
-}
+
 
 function getNewPiece(){
     return new Piece(0);
@@ -286,24 +284,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-document.addEventListener('keydown', manageInput);
-document.addEventListener('submit', function(event){
-    event.preventDefault();
-    if (document.getElementById('colour').checked){
-        colorSet = 1;
-    } else if (document.getElementById('melody').checked){
-        colorSet = 2;
-    } else{
-        colorSet = 0;
-    }
-    if (document.getElementById('solidOn').checked){
-        solidBlocks = true;
-    } else{
-        solidBlocks = false;
-    }
-    renderBoard();
-    updateUpcomingPieces();
-});
 function manageInput(event){
     if (event.keyCode == '37'){
         currentPiece.move(-1);
@@ -341,18 +321,6 @@ function hold(){
     currentPiece.update();
     updateHeldPiece();
 }
-
-setInterval(function(){
-    currentPiece.moveDown();
-    renderBoard();
-}, 500);
-
-let holdReady = true;
-let heldPiece = null;
-let currentBag = new Bag();
-var currentPiece = currentBag.getPiece();
-upcomingPieceGrid = Array.from({ length: 4 }, () => Array(4).fill('   '));
-updateUpcomingPieces();
 
 function updateHeldPiece(){
     let heldPieceElt = document.getElementById('held-piece');
@@ -493,4 +461,67 @@ function updateUpcomingPieces(){
     nextPiece.innerHTML = html;
 }
 
-gameLoop();
+var currentBag = new Bag();
+var colorSet = 0;
+var solidBlocks = false;
+var speed = 500;
+var holdReady = true;
+var heldPiece = null;
+var currentPiece = currentBag.getPiece();
+
+function startGame(){
+    gameLoop();
+    upcomingPieceGrid = Array.from({ length: 4 }, () => Array(4).fill('   '));
+    updateUpcomingPieces();
+    
+    document.addEventListener('keydown', manageInput);
+    document.addEventListener('submit', function(event){
+        event.preventDefault();
+        if (document.getElementById('colour').checked){
+            colorSet = 1;
+        } else if (document.getElementById('melody').checked){
+            colorSet = 2;
+        } else{
+            colorSet = 0;
+        }
+        if (document.getElementById('solidOn').checked){
+            solidBlocks = true;
+        } else{
+            solidBlocks = false;
+        }
+        renderBoard();
+        updateUpcomingPieces();
+    });
+
+    setInterval(function(){
+        currentPiece.moveDown();
+        renderBoard();
+    }, 500);
+    soundButton = document.getElementById('sound');
+    soundButton.addEventListener('click', function(){
+    let sound = document.getElementById('tetris-theme')
+    sound.muted = false;
+    sound.play();
+    });
+}
+
+restartButton = document.getElementById('restart')
+
+restartButton.addEventListener('click', function(){
+    restart();
+});
+
+startGame();
+
+function restart(){
+    restartButton.hidden = true;
+    restartButton.hidden = false;
+    grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));
+    currentBag = new Bag();
+    heldPiece = null;
+    currentPiece = currentBag.getPiece();
+    holdReady = true;
+    updateUpcomingPieces();
+    renderBoard();
+    lastGroundHitTime = 0;
+}
