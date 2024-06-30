@@ -306,8 +306,12 @@ function renderBoard() {
             if (grid[i][j] === '   '){
                 html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse;\'>${grid[i][j]}</block>`;
             } else if (grid[i][j].toString().includes('H')){
-                let color = typeToColor[grid[i][j].toString()[0]][colorSet]
-                html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${color}; opacity: 0.5; \'>[ ]</block>`;
+                let color = typeToColor[grid[i][j].toString()[0]][colorSet];
+                if (solidBlocks){
+                    html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${color}; background-color: ${color}; opacity: 0.5; \'>[ ]</block>`;
+                } else{
+                    html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${color}; opacity: 0.5; \'>[ ]</block>`;
+                }
             } 
             else{
                 let color = typeToColor[grid[i][j]][colorSet]
