@@ -138,6 +138,8 @@ table th, td{
 }
 
 #tetrisGrid{
+    /* background-image: url('Fun Stuff/Grid.png');
+    background-size: contain; */
     background-color: black;
     color: white;
     width: fit-content;
@@ -171,8 +173,12 @@ table th, td{
     color: white;
     background-color: black;
     text-align: center;
+    vertical-align: middle;
+    padding: 5px 2px 1px 2px;
+    justify-content: center;
     margin: 2px 5px;
     font-family: pixel-font;
+    border: 1px solid white;
 }
 
 .tetris-container{
@@ -180,7 +186,6 @@ table th, td{
     justify-content: left;
     align-items: top;
     width: fit-content;
-    background-color: black;
     color: white;
     font-family: pixel-font;
     font-weight: bold;

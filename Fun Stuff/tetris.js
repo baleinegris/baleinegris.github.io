@@ -30,7 +30,9 @@ class Bag{
         if (this.bag.length == 0){
             this.fillBag();
         }
-        return this.bag.pop();
+        let newPiece = this.bag.pop();
+        newPiece.highlight = newPiece.getHighlight();
+        return newPiece;
     }
 }
 
@@ -40,6 +42,7 @@ class Piece{
         this.type = type;
         this.orientation = 0;
         this.hitbox = this.getHitbox(this.middlePosition, this.orientation)
+        this.highlight = this.getHighlight();
     }
     getHitbox(middlePosition, orientation){
         if (this.type == 0){
@@ -104,11 +107,12 @@ class Piece{
     }
 
     moveDown(){
+        this.highlight = this.getHighlight();
         let spotFree = true;
         let block = this;
         this.hitbox.forEach(function(pos){
             let spotToTest = [pos[0] + 1, pos[1]];
-            if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && !(grid[spotToTest[0]][spotToTest[1]] === '   '))){
+            if (spotToTest[0] >= gridHeight || (!(block.inHitbox(spotToTest)) && !((grid[spotToTest[0]][spotToTest[1]] === '   ') || grid[spotToTest[0]][spotToTest[1]].toString().includes('H')))){
                 spotFree = false;
                 groundHit();
                 return;
@@ -125,9 +129,10 @@ class Piece{
     }
 
     rotate(direction){
-        console.log('rotating');
         let oldHitbox = this.hitbox;
         let oldOrientation = this.orientation;
+        let rotateSound = new Audio("rotateSound.wav");
+        rotateSound.play();
         let newOrientation = (this.orientation + direction) % 4;
         let newHitbox = this.getHitbox(this.middlePosition, newOrientation);
         if (!(this.isValidMove(newHitbox))){
@@ -136,6 +141,7 @@ class Piece{
             this.erase();
             this.hitbox = newHitbox;
             this.orientation = newOrientation;
+            this.highlight = this.getHighlight();
             this.update();
         }
     }
@@ -147,7 +153,7 @@ class Piece{
         currentHitbox.forEach(function(pos){
             let spotToTest = [pos[0], pos[1] + direction];
             let alreadyInHitbox = block.inHitbox(spotToTest);
-            if (spotToTest[1] >= gridWidth || spotToTest[1] < 0 || (!(alreadyInHitbox) && grid[spotToTest[0]][spotToTest[1]] != '   ')){
+            if (spotToTest[1] >= gridWidth || spotToTest[1] < 0 || (!(alreadyInHitbox) && (grid[spotToTest[0]][spotToTest[1]] != '   ' || grid[spotToTest[0]][spotToTest[1]].toString().includes('H')))){
                 spotFree = false;
                 }
             })
@@ -155,6 +161,7 @@ class Piece{
             this.erase();
             this.middlePosition[1] += direction;
             this.hitbox = this.getHitbox(this.middlePosition, this.orientation);
+            this.highlight = this.getHighlight();
             this.update();
         }
     }
@@ -162,7 +169,7 @@ class Piece{
     isValidMove(hitbox){
         for (let i = 0; i < hitbox.length; i++){
             let pos = hitbox[i];
-            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || (!this.inHitbox([pos[0], pos[1]]) && !(grid[pos[0]][pos[1]] === '   '))){
+            if (pos[0] >= gridHeight || pos[1] >= gridWidth || pos[1] < 0 || (!this.inHitbox([pos[0], pos[1]]) && !(grid[pos[0]][pos[1]] === '   ' || grid[pos[0]][pos[1]].toString().includes('H')))){
                 return false;
             }
         }
@@ -195,18 +202,46 @@ class Piece{
         this.moveDown();
     }
 
+    getHighlight(){
+        let minDist = 20;
+        let block = this
+        this.hitbox.forEach(function(pos){
+            let dist = 0;
+            let spotToTest = [pos[0] + dist, pos[1]];
+            while (spotToTest[0] < gridHeight && (block.inHitbox(spotToTest) || (grid[spotToTest[0]][spotToTest[1]] === '   ') || grid[spotToTest[0]][spotToTest[1]].toString().includes('H'))){
+                dist += 1;
+                spotToTest = [pos[0] + dist, pos[1]];
+            }
+            if (dist < minDist){
+                minDist = dist;
+            }
+        });
+        let highlight = [];
+        this.hitbox.forEach(function(pos){
+            highlight.push([pos[0] + minDist - 1, pos[1]]);
+        });
+        return highlight;
+    }
+
     erase(){
         this.hitbox.forEach(function(pos){
+            grid[pos[0]][pos[1]] = '   ';
+        });
+        this.highlight.forEach(function(pos){
             grid[pos[0]][pos[1]] = '   ';
         });
     }
 
     update(){
         let block = this;
+        this.highlight.forEach(function(pos){
+            grid[pos[0]][pos[1]] = block.type + 'H';
+        });
         this.hitbox.forEach(function(pos){
             grid[pos[0]][pos[1]] = block.type;
         });
     }
+
 }    
 
  const groundHitCooldown = 100;
@@ -223,6 +258,7 @@ function groundHit(){
         let rowsCleared = []
         let newPiece = currentBag.getPiece();
         currentPiece = newPiece;
+        currentPiece.highlight = currentPiece.getHighlight();
         for (let i = 0; i < gridHeight; i++){
             let rowFull = true;
             for (let j = 0; j < gridWidth; j++){
@@ -235,6 +271,14 @@ function groundHit(){
                 rowsCleared.push(i);
             }
         }
+        let rowClearedSound = new Audio("rowCleared.wav"); 
+        let groundHitSound = new Audio("groundHit.wav");
+
+        if (rowsCleared.length > 0){
+            rowClearedSound.play();
+        } else{
+            groundHitSound.play();
+        };
         for (let i = 0; i < rowsCleared.length; i++){            
                 for (let j = rowsCleared[i]; j > 0; j--){
                     grid[j] = grid[j - 1];
@@ -260,13 +304,17 @@ function renderBoard() {
         html += '<div>';
         for (let j = 0; j < gridWidth; j++) {
             if (grid[i][j] === '   '){
-                html += `<block>${grid[i][j]}</block>`;
-            } else{
+                html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse;\'>${grid[i][j]}</block>`;
+            } else if (grid[i][j].toString().includes('H')){
+                let color = typeToColor[grid[i][j].toString()[0]][colorSet]
+                html += `<block style=\'border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${color}; opacity: 0.5; \'>[ ]</block>`;
+            } 
+            else{
                 let color = typeToColor[grid[i][j]][colorSet]
                 if (solidBlocks){
-                    html += `<block style='background-color: ${color}; color: ${color};'>[ ]</block>`;
+                    html += `<block style='background-color: ${color}; border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${color};'>[ ]</block>`;
                 } else{
-                    html += `<block style='color: ${color};'>[ ]</block>`;
+                    html += `<block style='color: ${color}; border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse;'>[ ]</block>`;
                 }
             }
         }
@@ -318,6 +366,7 @@ function hold(){
     }
     currentPiece.middlePosition = middlePosition;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
+    currentPiece.highlight = currentPiece.getHighlight();
     currentPiece.update();
     updateHeldPiece();
 }
@@ -469,6 +518,8 @@ var holdReady = true;
 var heldPiece = null;
 var currentPiece = currentBag.getPiece();
 tracks = ['Tetris.mp3', 'ArcadeMusic.mp3', 'NeonArcade.mp3']
+var rotateSound = new Audio("rotateSound.wav");
+var rowClearedSound = new Audio("rowCleared.wav"); 
 
 function startGame(){
     gameLoop();
@@ -499,8 +550,9 @@ function startGame(){
         renderBoard();
     }, 500);
     soundButton = document.getElementById('sound');
+    let sound = document.getElementById('tetris-theme');
+    sound.loop = false;
     soundButton.addEventListener('click', function(){
-        let sound = document.getElementById('tetris-theme')
         if (sound.muted == true){
             sound.muted = false;
             sound.play();
