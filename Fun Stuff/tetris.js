@@ -431,12 +431,12 @@ function updateHeldPiece(){
             html += '<pre style=\'background-color: black; color: white; font-family: pixel-font; font-weight: bold;\'>'
             for (let j = 0; j < heldPieceGrid[0].length; j++){
                 if (heldPieceGrid[i][j] === '   '){
-                    html += `<block>${heldPieceGrid[i][j]}</block>`;
+                    html += `<block style=\'border: solid 1px black; border-collapse: collapse\'>${heldPieceGrid[i][j]}</block>`;
                 } else{
                     if (solidBlocks){
-                        html += `<block style='background-color: ${heldPieceGrid[i][j]}; color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
+                        html += `<block style='border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; background-color: ${heldPieceGrid[i][j]}; color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
                     } else{
-                        html += `<block style='color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
+                        html += `<block style='border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${heldPieceGrid[i][j]};'>[ ]</block>`;
                     }
                 }
             }
@@ -500,12 +500,12 @@ function updateUpcomingPieces(){
         html += '<pre style=\'background-color: black; color: white; font-family: pixel-font; font-weight: bold;\'>'
         for (let j = 0; j < upcomingPieceGrid[0].length; j++){
             if (upcomingPieceGrid[i][j] === '   '){
-                html += `<block>${upcomingPieceGrid[i][j]}</block>`;
+                html += `<block style=\'border: 1px solid black; border-collapse: collapse\'>${upcomingPieceGrid[i][j]}</block>`;
             } else{
                 if (solidBlocks){
-                    html += `<block style='background-color: ${upcomingPieceGrid[i][j]}; color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
+                    html += `<block style='border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; background-color: ${upcomingPieceGrid[i][j]}; color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
                 } else{
-                    html += `<block style='color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
+                    html += `<block style='border: solid 1px rgba(255, 255, 255, .3); border-collapse: collapse; color: ${upcomingPieceGrid[i][j]};'>[ ]</block>`;
                 }
             }
         }
@@ -515,8 +515,8 @@ function updateUpcomingPieces(){
 }
 
 var currentBag = new Bag();
-var colorSet = 0;
-var solidBlocks = false;
+var colorSet = 1;
+var solidBlocks = true;
 var speed = 500;
 var holdReady = true;
 var heldPiece = null;
@@ -548,7 +548,6 @@ function startGame(){
         renderBoard();
         updateUpcomingPieces();
     });
-
     setInterval(function(){
         currentPiece.moveDown();
         renderBoard();

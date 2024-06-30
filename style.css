@@ -194,9 +194,8 @@ table th, td{
 }
 
 #piece1, #held-piece{
-    border: 2px solid white;
+    /* border: 2px solid white; */
     padding: 10px;
-    width: 56px;
 }
 
 #held-piece-sign{
