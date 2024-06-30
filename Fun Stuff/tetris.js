@@ -468,6 +468,7 @@ var speed = 500;
 var holdReady = true;
 var heldPiece = null;
 var currentPiece = currentBag.getPiece();
+tracks = ['Tetris.mp3', 'ArcadeMusic.mp3', 'NeonArcade.mp3']
 
 function startGame(){
     gameLoop();
@@ -499,9 +500,14 @@ function startGame(){
     }, 500);
     soundButton = document.getElementById('sound');
     soundButton.addEventListener('click', function(){
-    let sound = document.getElementById('tetris-theme')
-    sound.muted = false;
-    sound.play();
+        let sound = document.getElementById('tetris-theme')
+        if (sound.muted == true){
+            sound.muted = false;
+            sound.play();
+            soundButton.innerHTML = 'Next Track';
+        } else{
+            return;
+        }
     });
 }
 
