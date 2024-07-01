@@ -336,11 +336,30 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+var leftPressed = false;
+var rightPressed = false;
+var leftPressedTime = 0;
+var rightPressedTime = 0;
+var dasTimer = null;
+var arrTimer = null;
+
 function manageInput(event){
-    if (event.keyCode == '37'){
+    if (event.keyCode == '37' && !leftPressed){
+        leftPressed = true;
         currentPiece.move(-1);
-    } else if (event.keyCode == '39'){
+        clearTimeout(dasTimer);
+        clearTimeout(arrTimer);
+        dasTimer = setTimeout(() => {
+            arrTimer = setInterval(() => currentPiece.move(-1), ARR)
+        }, DAS);
+    } else if (event.keyCode === 39 && !rightPressed) { // Right arrow key
+        rightPressed = true;
         currentPiece.move(1);
+        clearTimeout(dasTimer);
+        clearInterval(arrTimer);
+        dasTimer = setTimeout(() => {
+            arrTimer = setInterval(() => currentPiece.move(1), ARR);
+        }, DAS);
     } else if (event.keyCode == '38'){
         currentPiece.rotate(1);
     } else if (event.keyCode == '40'){
@@ -370,7 +389,7 @@ function hold(){
     }
     currentPiece.middlePosition = middlePosition;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
-    currentPiece.highlight = currentPiece.getHighlight();
+    currentPiece.highlight = currentPiece.getHighlight(); //TODO: Fix pieces getting deleted, something to do with highlight. Also fix offsetting on edges when swapped
     currentPiece.update();
     updateHeldPiece();
 }
@@ -525,12 +544,31 @@ tracks = ['Tetris.mp3', 'ArcadeMusic.mp3', 'NeonArcade.mp3']
 var rotateSound = new Audio("rotateSound.wav");
 var rowClearedSound = new Audio("rowCleared.wav"); 
 
+var DAS = 133;
+var ARR = 10;
+
 function startGame(){
     gameLoop();
     upcomingPieceGrid = Array.from({ length: 4 }, () => Array(4).fill('   '));
     updateUpcomingPieces();
     
     document.addEventListener('keydown', manageInput);
+    document.addEventListener('keyup', function(event){
+        if (event.keyCode == '37'){
+            leftPressed = false;
+            if (!(rightPressed)){
+                clearInterval(arrTimer);
+                clearTimeout(dasTimer);
+            }
+        } else if (event.keyCode == '39'){
+            rightPressed = false;
+            if (!(leftPressed)){
+                clearInterval(arrTimer);
+                clearTimeout(dasTimer);
+            }
+        }
+        // clearInterval(arrTimer);
+    });
     document.addEventListener('submit', function(event){
         event.preventDefault();
         if (document.getElementById('colour').checked){

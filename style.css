@@ -140,6 +140,7 @@ table th, td{
 #tetrisGrid{
     /* background-image: url('Fun Stuff/Grid.png');
     background-size: contain; */
+    display: grid;
     background-color: black;
     color: white;
     width: fit-content;
