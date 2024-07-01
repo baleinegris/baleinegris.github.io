@@ -133,7 +133,7 @@ class Piece{
         let oldOrientation = this.orientation;
         let rotateSound = new Audio("rotateSound.wav");
         rotateSound.play();
-        let newOrientation = (this.orientation + direction) % 4;
+        let newOrientation = (Math.abs(this.orientation + direction)) % 4;
         let newHitbox = this.getHitbox(this.middlePosition, newOrientation);
         if (!(this.isValidMove(newHitbox))){
             return; // TODO: Add offsetting
@@ -363,7 +363,7 @@ function manageInput(event){
     } else if (event.keyCode == '38'){
         currentPiece.rotate(1);
     } else if (event.keyCode == '40'){
-        currentPiece.moveDown();
+        currentPiece.rotate(-1);
     } else if (event.code == 'Space'){
         currentPiece.hardDrop();
     } else if (event.code == 'KeyC'){
@@ -387,7 +387,8 @@ function hold(){
         heldPiece = currentPiece;
         currentPiece = temp;
     }
-    currentPiece.middlePosition = middlePosition;
+    currentPiece.middlePosition = [1, middlePosition[1]];
+    currentPiece.orientation = 0;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
     currentPiece.highlight = currentPiece.getHighlight(); //TODO: Fix pieces getting deleted, something to do with highlight. Also fix offsetting on edges when swapped
     currentPiece.update();
@@ -590,18 +591,31 @@ function startGame(){
         currentPiece.moveDown();
         renderBoard();
     }, 500);
+    const tracks = ['ArcadeMusic.mp3', 'NeonArcade.mp3', 'RelaxingArcade.mp3', 'GroovyArcade.mp3', 'FastArcade.mp3'];
+    let songIndex = Math.floor(Math.random() * tracks.length);
     soundButton = document.getElementById('sound');
     let sound = document.getElementById('tetris-theme');
     sound.loop = false;
     soundButton.addEventListener('click', function(){
+        soundButton.blur();
         if (sound.muted == true){
-            sound.muted = false;
+            sound.src = 'Music/'+tracks[songIndex];
             sound.play();
-            soundButton.innerHTML = 'Next Track';
+            sound.muted = false;
+            console.log('sound should start?');
+            soundButton.innerHTML = "Now Playing: " + tracks[songIndex].split('.')[0];
         } else{
-            return;
+            nextSong();
+            soundButton.innerHTML = "Now Playing: " + tracks[songIndex].split('.')[0];
         }
     });
+    function nextSong(){
+        songIndex = (songIndex + 1) % 5;
+        console.log(songIndex + ' ' + 'Music/'+tracks[songIndex]);
+        sound.src = 'Music/'+tracks[songIndex];
+        sound.play();
+    }
+    sound.onended = nextSong;
 }
 
 restartButton = document.getElementById('restart')
