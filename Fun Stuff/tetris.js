@@ -289,6 +289,7 @@ function groundHit(){
             lastGroundHitTime = now;
             holdReady = true;
             }
+        renderBoard();
         }
 
 
