@@ -135,12 +135,30 @@ class Piece{
         rotateSound.play();
         let newOrientation = (Math.abs(this.orientation + direction)) % 4;
         let newHitbox = this.getHitbox(this.middlePosition, newOrientation);
+        this.erase();
+        this.hitbox = newHitbox;
+        this.orientation = newOrientation;
+        var block = this;
         if (!(this.isValidMove(newHitbox))){
-            return; // TODO: Add offsetting
+            let offsets = [1, -1, 2, -2];
+            for (let i = 0; i < offsets.length; i++){
+                let offset = offsets[i];
+                block.offset(offset);
+                if (block.isValidMove(block.hitbox)){
+                    block.erase();
+                    block.highlight = block.getHighlight();
+                    block.update();
+                    return;
+                } else{
+                    block.erase();
+                    block.offset(-offset);
+                }
+            }
+        block.hitbox = oldHitbox;
+        block.orientation = oldOrientation;
+        return;
         } else{
             this.erase();
-            this.hitbox = newHitbox;
-            this.orientation = newOrientation;
             this.highlight = this.getHighlight();
             this.update();
         }
@@ -200,6 +218,12 @@ class Piece{
         this.middlePosition = newPosition;
         this.update();
         this.moveDown();
+    }
+
+    offset(direction){
+        this.hitbox.forEach(function(pos){
+            pos[1] += direction;
+        });
     }
 
     getHighlight(){
@@ -378,7 +402,6 @@ function manageInput(event){
 
 function hold(){
     holdReady = false;
-    let middlePosition = currentPiece.middlePosition;
     currentPiece.erase();
     if (heldPiece == null){
         heldPiece = currentPiece;
@@ -388,7 +411,7 @@ function hold(){
         heldPiece = currentPiece;
         currentPiece = temp;
     }
-    currentPiece.middlePosition = [1, middlePosition[1]];
+    currentPiece.middlePosition = [1, Math.floor(gridWidth / 2)];
     currentPiece.orientation = 0;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
     currentPiece.highlight = currentPiece.getHighlight(); //TODO: Fix pieces getting deleted, something to do with highlight. Also fix offsetting on edges when swapped
