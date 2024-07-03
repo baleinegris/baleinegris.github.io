@@ -2,13 +2,13 @@ const gridWidth = 10;
 const gridHeight = 20;
 let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
 const typeToColor = {
-    0: ['white', 'cyan', 'pink'],
-    1: ['white','green', 'pink'],
-    2: ['white','red', 'pink'],
-    3: ['white','blue', 'pink'],
-    4: ['white','orange', 'pink'],
-    5: ['white','yellow', 'pink'],
-    6: ['white','purple', 'pink'],
+    0: ['white', 'cyan', 'deeppink'],
+    1: ['white','green', 'cornsilk'],
+    2: ['white','red', 'hotpink'],
+    3: ['white','blue', 'lavender'],
+    4: ['white','orange', 'lightcyan'],
+    5: ['white','yellow', 'lightpink'],
+    6: ['white','purple', 'mistyrose'],
 }
 
 class Bag{
