@@ -615,7 +615,7 @@ function startGame(){
         currentPiece.moveDown();
         renderBoard();
     }, 500);
-    const tracks = ['ArcadeMusic.mp3', 'NeonArcade.mp3', 'RelaxingArcade.mp3', 'GroovyArcade.mp3', 'FastArcade.mp3'];
+    const tracks = ['ArcadeMusic.mp3', 'NeonArcade.mp3', 'RelaxingArcade.mp3', 'GroovyArcade.mp3', 'FastArcade.mp3', 'ElectricDreams.mp3'];
     let songIndex = Math.floor(Math.random() * tracks.length);
     soundButton = document.getElementById('sound');
     let sound = document.getElementById('tetris-theme');
@@ -634,7 +634,7 @@ function startGame(){
         }
     });
     function nextSong(){
-        songIndex = (songIndex + 1) % 5;
+        songIndex = (songIndex + 1) % tracks.length;
         console.log(songIndex + ' ' + 'Music/'+tracks[songIndex]);
         sound.src = 'Music/'+tracks[songIndex];
         sound.play();
