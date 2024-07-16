@@ -4,7 +4,6 @@
 }
 
 body{
-    background-color: cadetblue;
     font: 1em 'OCR A', 'sans-serif'; 
 }
 
@@ -201,4 +200,101 @@ table th, td{
 
 #held-piece-sign{
     font-family: pixel-font;
+}
+
+
+.background{
+    background: rgb(1,84,123);
+    background: radial-gradient(circle at bottom right, rgba(1,84,123,1) 0%, rgba(0,212,255,1) 100%);
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.container{
+    width: 20vw;
+    height: 20vw;
+    position: relative;
+}
+
+#outer-ring{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+#outer-ring > .ring{
+    width: 300px;
+    background: cyan;
+    size: fit-content;
+}
+
+.ring{
+    width: 300px;
+    background: white;
+    position: absolute;
+    aspect-ratio: 1;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    opacity: 0.4;
+    mask:
+      linear-gradient(#0000 0 0) content-box intersect,
+      conic-gradient(#000 var(--a),#0000 0);
+    animation: rotate 60s linear infinite;
+  }
+
+.ring:nth-child(1){
+    --a: 120deg
+}
+.ring:nth-child(2){
+    animation-delay: -24s;
+    --a: 100deg
+}
+
+.ring:nth-child(3){
+    animation-delay: -45s;
+    --a: 50deg
+}
+
+.ring:nth-child(4){
+    animation-delay: -1.5s;
+    --a: 87deg
+}
+
+.ring:nth-child(5){
+    animation-delay: -49s;
+    --a: 60deg
+}
+
+.ring:nth-child(6){
+    animation-delay: -23s;
+    --a: 40deg
+}
+
+.disk{
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    animation: rotate 20s infinite linear;
+}
+
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
 }

@@ -613,6 +613,7 @@ function startGame(){
         songIndex = (songIndex + 1) % 5;
         console.log(songIndex + ' ' + 'Music/'+tracks[songIndex]);
         sound.src = 'Music/'+tracks[songIndex];
+        soundButton.innerHTML = "Now Playing: " + tracks[songIndex].split('.')[0];
         sound.play();
     }
     sound.onended = nextSong;
