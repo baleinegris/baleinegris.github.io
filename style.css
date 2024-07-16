@@ -226,7 +226,24 @@ table th, td{
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    position: relative;
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+}
+
+#inner-ring{
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    position: absolute;
+    overflow: hidden;
+}
+
+#innermost-ring{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: absolute;
     overflow: hidden;
 }
 
@@ -236,8 +253,19 @@ table th, td{
     size: fit-content;
 }
 
+#inner-ring > .ring{
+    width: 240px;
+    background: orange;
+    size: fit-content;
+}
+
+#innermost-ring > .ring{
+    width: 200px;
+    background: red;
+    size: fit-content;
+}
+
 .ring{
-    width: 300px;
     background: white;
     position: absolute;
     aspect-ratio: 1;
@@ -251,33 +279,105 @@ table th, td{
     animation: rotate 60s linear infinite;
   }
 
-.ring:nth-child(1){
+#or1{
     --a: 120deg
 }
-.ring:nth-child(2){
+#or2{
     animation-delay: -24s;
     --a: 100deg
 }
 
-.ring:nth-child(3){
+#or3{
     animation-delay: -45s;
     --a: 50deg
 }
 
-.ring:nth-child(4){
+#or4{
+    animation: rotate 40s linear infinite;
     animation-delay: -1.5s;
     --a: 87deg
 }
 
-.ring:nth-child(5){
+#or5{
     animation-delay: -49s;
     --a: 60deg
 }
 
-.ring:nth-child(6){
+#or6{
     animation-delay: -23s;
     --a: 40deg
 }
+
+#ir1{
+    animation: rotate 45s linear infinite;
+    --a: 120deg
+}
+
+#ir2{
+    animation: rotate 45s linear infinite;
+    --a: 100deg;
+    animation-delay: -10s;
+}
+
+#ir3{
+    animation: rotate 45s linear infinite;
+    --a: 90deg;
+    animation-delay: -29s;
+}
+
+#ir4{
+    animation: rotate 30s linear infinite;
+    --a: 80deg;
+    animation-delay: -33s;
+}
+
+#ir5{
+    animation: rotate 45s linear infinite;
+    --a: 50deg;
+    animation-delay: -43s;
+
+}
+#ir6{
+    animation: rotate 45s linear infinite;
+    animation-delay: -20s;
+    --a: 60deg
+}
+
+#imr1{
+    animation: rotate 30s linear infinite;
+    --a: 120deg
+}
+
+#imr2{
+    animation: rotate 30s linear infinite;
+    --a: 100deg;
+    animation-delay: -10s;
+}
+
+#imr3{
+    animation: rotate 30s linear infinite;
+    --a: 90deg;
+    animation-delay: -29s;
+}
+
+#imr4{
+    animation: rotate 30s linear infinite;
+    --a: 80deg;
+    animation-delay: -33s;
+}
+
+#imr5{
+    animation: rotate 30s linear infinite;
+    --a: 50deg;
+    animation-delay: -43s;
+
+}
+#imr6{
+    animation: rotate 30s linear infinite;
+    animation-delay: -20s;
+    --a: 100deg
+}
+
 
 .disk{
     width: 5vw;

@@ -2,13 +2,13 @@ const gridWidth = 10;
 const gridHeight = 20;
 let grid = Array.from({ length: gridHeight }, () => Array(gridWidth).fill('   '));;
 const typeToColor = {
-    0: ['white', 'cyan', 'pink'],
-    1: ['white','green', 'pink'],
-    2: ['white','red', 'pink'],
-    3: ['white','blue', 'pink'],
-    4: ['white','orange', 'pink'],
-    5: ['white','yellow', 'pink'],
-    6: ['white','purple', 'pink'],
+    0: ['white', 'cyan', 'deeppink'],
+    1: ['white','green', 'cornsilk'],
+    2: ['white','red', 'hotpink'],
+    3: ['white','blue', 'lavender'],
+    4: ['white','orange', 'lightcyan'],
+    5: ['white','yellow', 'lightpink'],
+    6: ['white','purple', 'mistyrose'],
 }
 
 class Bag{
@@ -135,12 +135,30 @@ class Piece{
         rotateSound.play();
         let newOrientation = (Math.abs(this.orientation + direction)) % 4;
         let newHitbox = this.getHitbox(this.middlePosition, newOrientation);
+        this.erase();
+        this.hitbox = newHitbox;
+        this.orientation = newOrientation;
+        var block = this;
         if (!(this.isValidMove(newHitbox))){
-            return; // TODO: Add offsetting
+            let offsets = [1, -1, 2, -2];
+            for (let i = 0; i < offsets.length; i++){
+                let offset = offsets[i];
+                block.offset(offset);
+                if (block.isValidMove(block.hitbox)){
+                    block.erase();
+                    block.highlight = block.getHighlight();
+                    block.update();
+                    return;
+                } else{
+                    block.erase();
+                    block.offset(-offset);
+                }
+            }
+        block.hitbox = oldHitbox;
+        block.orientation = oldOrientation;
+        return;
         } else{
             this.erase();
-            this.hitbox = newHitbox;
-            this.orientation = newOrientation;
             this.highlight = this.getHighlight();
             this.update();
         }
@@ -200,6 +218,12 @@ class Piece{
         this.middlePosition = newPosition;
         this.update();
         this.moveDown();
+    }
+
+    offset(direction){
+        this.hitbox.forEach(function(pos){
+            pos[1] += direction;
+        });
     }
 
     getHighlight(){
@@ -289,6 +313,7 @@ function groundHit(){
             lastGroundHitTime = now;
             holdReady = true;
             }
+        renderBoard();
         }
 
 
@@ -377,7 +402,6 @@ function manageInput(event){
 
 function hold(){
     holdReady = false;
-    let middlePosition = currentPiece.middlePosition;
     currentPiece.erase();
     if (heldPiece == null){
         heldPiece = currentPiece;
@@ -387,7 +411,7 @@ function hold(){
         heldPiece = currentPiece;
         currentPiece = temp;
     }
-    currentPiece.middlePosition = [1, middlePosition[1]];
+    currentPiece.middlePosition = [1, Math.floor(gridWidth / 2)];
     currentPiece.orientation = 0;
     currentPiece.hitbox = currentPiece.getHitbox(currentPiece.middlePosition, currentPiece.orientation);
     currentPiece.highlight = currentPiece.getHighlight(); //TODO: Fix pieces getting deleted, something to do with highlight. Also fix offsetting on edges when swapped
@@ -591,7 +615,7 @@ function startGame(){
         currentPiece.moveDown();
         renderBoard();
     }, 500);
-    const tracks = ['ArcadeMusic.mp3', 'NeonArcade.mp3', 'RelaxingArcade.mp3', 'GroovyArcade.mp3', 'FastArcade.mp3'];
+    const tracks = ['ArcadeMusic.mp3', 'NeonArcade.mp3', 'RelaxingArcade.mp3', 'GroovyArcade.mp3', 'FastArcade.mp3', 'ElectricDreams.mp3'];
     let songIndex = Math.floor(Math.random() * tracks.length);
     soundButton = document.getElementById('sound');
     let sound = document.getElementById('tetris-theme');
@@ -610,7 +634,7 @@ function startGame(){
         }
     });
     function nextSong(){
-        songIndex = (songIndex + 1) % 5;
+        songIndex = (songIndex + 1) % tracks.length;
         console.log(songIndex + ' ' + 'Music/'+tracks[songIndex]);
         sound.src = 'Music/'+tracks[songIndex];
         soundButton.innerHTML = "Now Playing: " + tracks[songIndex].split('.')[0];
