@@ -398,3 +398,8 @@ table th, td{
         transform: rotate(360deg);
     }
 }
+
+#current-game{
+    color: black;
+    font-size: 1.5em;
+}
